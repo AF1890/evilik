@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="fr">
+{{template "head" .}}
+<body>
+    {{template "header" .}}
+
+    <main>
+        <div class="page-header">
+            <div class="container">
+                <h1>{{.Title}}</h1>
+                <p class="subtitle">Toutes les informations pour rejoindre la fête</p>
+            </div>
+        </div>
+
+        <section class="content-section">
+            <div class="container">
+                <div class="info-simple">
+                    <div class="info-icon-large">{{.Info.Venue.Icon}}</div>
+                    <h2 class="info-title-large">{{.Info.Venue.Title}}</h2>
+                    <div class="info-content-large">{{.Info.Venue.Content}}</div>
+                    
+                    {{if .Info.MapURL}}
+                    <div class="map-container-centered">
+                        <a href="{{.Info.MapURL}}" target="_blank" rel="noopener noreferrer" class="btn-primary btn-large-map">
+                            🗺️ Voir sur Google Maps
+                        </a>
+                    </div>
+                    {{end}}
+                </div>
+            </div>
+        </section>
+    </main>
+
+    {{template "footer" .}}
+</body>
+</html>

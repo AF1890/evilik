@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="fr">
+{{template "head" .}}
+<body>
+    {{template "header" .}}
+
+    <main>
+        <div class="hero-fullscreen">
+            <div class="hero-image-fullscreen">
+                <img src="/static/images/hero.png?v=2" alt="Notre photo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <div class="hero-placeholder" style="display:none;">
+                    <span class="emoji">💑</span>
+                </div>
+            </div>
+            <div class="hero-overlay"></div>
+            <div class="hero-content-fullscreen">
+                <h1 class="hero-title-fullscreen">Aylin et Guillaume</h1>
+                <p class="hero-date-fullscreen">11 juillet 2026 à Cély-en-Bière</p>
+                <p class="hero-text-fullscreen">
+                    16 ans, deux enfants... et maintenant,<br>
+                    on embarque pour une nouvelle aventure: on se marie!<br>
+                    Hâte de vous avoir avec nous !
+                </p>
+                <!-- <p class="hero-text-fullscreen">
+                    Après 16 ans ensemble et deux enfants,<br>
+                    on se marie et on a hâte de le célébrer avec vous !
+                </p> -->
+                <div class="hero-cta">
+                    <a href="/rsvp" class="btn-primary btn-hero">Confirmer ma présence</a>
+                </div>
+            </div>
+        </div>
+
+        <section class="cta-section">
+            <div class="container">
+                <div class="cta-grid">
+                    <a href="/planning" class="cta-card">
+                        <span class="cta-icon">📅</span>
+                        <h3>Planning</h3>
+                        <p>Découvrez le déroulement de la journée</p>
+                    </a>
+                    <a href="/infos" class="cta-card">
+                        <span class="cta-icon">ℹ️</span>
+                        <h3>Infos pratiques</h3>
+                        <p>Lieu, accès, hébergement...</p>
+                    </a>
+                    <a href="/rsvp" class="cta-card cta-primary">
+                        <span class="cta-icon">✉️</span>
+                        <h3>Confirmer votre présence</h3>
+                        <p>Merci de nous répondre avant le 1er mars 2026</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    {{template "footer" .}}
+</body>
+</html>
+

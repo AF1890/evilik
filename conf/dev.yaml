@@ -1,0 +1,30 @@
+---
+# Configuration pour l'environnement de développement
+
+server:
+  port: "8080"
+  base_url: "http://localhost:8080"
+  environment: "dev"
+  allowed_hosts: ""
+
+security:
+  csp_enabled: true
+  hsts_enabled: false # Désactivé en dev (pas de HTTPS)
+  rate_limit_enabled: true
+  rate_limit_per_minute: 120 # Plus permissif en dev
+  basic_auth_enabled: false # Pas de basic auth en dev
+  session_secret: "dev-session-secret-not-for-prod"
+  encryption_key: "" # Généré automatiquement en dev
+  encryption_key_env_var: "RSVP_ENCRYPTION_KEY"
+
+rsvp:
+  enabled: true
+  storage_path: "./rsvp_data/reservations.json"
+
+admin:
+  enabled: true
+  username: "admin"
+  password: "test123"
+  username_env_var: "ADMIN_USERNAME"
+  password_env_var: "ADMIN_PASSWORD"
+

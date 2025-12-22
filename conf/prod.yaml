@@ -1,0 +1,40 @@
+---
+# Configuration pour l'environnement de production
+
+server:
+  port: "8080"
+  base_url: "https://votre-domaine.com"
+  environment: "prod"
+  allowed_hosts: "votre-domaine.com,www.votre-domaine.com"
+
+security:
+  csp_enabled: true
+  hsts_enabled: true # HTTPS activé en prod
+  rate_limit_enabled: true
+  rate_limit_per_minute: 60 # Plus strict en prod
+  basic_auth_enabled: true # Protection du site en prod (optionnel)
+  session_secret: "" # À définir via CSRF_SECRET_KEY
+  encryption_key: "" # À définir via RSVP_ENCRYPTION_KEY (OBLIGATOIRE)
+  encryption_key_env_var: "RSVP_ENCRYPTION_KEY"
+
+rsvp:
+  enabled: true
+  storage_path: "/var/lib/wedding-web/rsvp_data/reservations.json"
+
+admin:
+  enabled: true
+  username: "" # À définir via ADMIN_USERNAME (OBLIGATOIRE)
+  password: "" # À définir via ADMIN_PASSWORD (OBLIGATOIRE)
+  username_env_var: "ADMIN_USERNAME"
+  password_env_var: "ADMIN_PASSWORD"
+
+# IMPORTANT : En production, vous DEVEZ définir les variables d'environnement suivantes :
+#
+# RSVP_ENCRYPTION_KEY : Clé de chiffrement AES-256 (générer avec : openssl rand -base64 32)
+# ADMIN_USERNAME      : Nom d'utilisateur admin
+# ADMIN_PASSWORD      : Mot de passe admin (fort !)
+# CSRF_SECRET_KEY     : Secret pour les tokens CSRF (optionnel, par défaut généré)
+#
+# Exemple de démarrage :
+#   RSVP_ENCRYPTION_KEY=xxx ADMIN_USERNAME=admin ADMIN_PASSWORD=xxx ./wedding-web -config conf/prod.yaml
+

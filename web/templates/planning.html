@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fr">
+{{template "head" .}}
+<body>
+    {{template "header" .}}
+
+    <main>
+        <div class="page-header">
+            <div class="container">
+                <h1>{{.Title}}</h1>
+                <p class="subtitle">Programme de la journée du 11 juillet 2026</p>
+            </div>
+        </div>
+
+        <section class="content-section">
+            <div class="container">
+                <div class="download-btn-container">
+                    <a href="/calendar.ics" class="btn-secondary" download>
+                        📥 Télécharger le calendrier (.ics)
+                    </a>
+                </div>
+
+                <div class="timeline">
+                    {{range .Planning.Events}}
+                    <div class="timeline-item">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            {{if not .HideTime}}
+                            <div class="timeline-time">
+                                {{.StartTime.Format "15:04"}} - {{.EndTime.Format "15:04"}}
+                            </div>
+                            {{end}}
+                            <h3 class="timeline-title">{{.Title}}</h3>
+                            {{if .Description}}
+                            <p class="timeline-description">{{.Description}}</p>
+                            {{end}}
+                            {{if not .HideLocation}}
+                            <div class="timeline-location">
+                                📍 {{.Location}}<br>
+                                <span class="small">{{.Address}}</span>
+                            </div>
+                            {{end}}
+                        </div>
+                    </div>
+                    {{end}}
+                </div>
+
+                <div class="info-box mt-4">
+                    <p><strong>Note importante :</strong> Les horaires sont donnés à titre indicatif et peuvent varier légèrement.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    {{template "footer" .}}
+</body>
+</html>
+

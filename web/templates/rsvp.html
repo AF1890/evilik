@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="fr">
+{{template "head" .}}
+<body>
+    {{template "header" .}}
+
+    <main>
+        <div class="page-header">
+            <div class="container">
+                <h1>{{.Title}}</h1>
+                <p class="subtitle">Merci de confirmer votre présence avant le 1er juin 2026</p>
+            </div>
+        </div>
+
+        <section class="content-section">
+            <div class="container">
+                <div class="form-container">
+                    <form method="POST" action="/rsvp" class="rsvp-form">
+                        <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
+                        
+                        <!-- Honeypot anti-spam (caché) -->
+                        <input type="text" name="website" style="display:none;" tabindex="-1" autocomplete="off">
+
+                        <!-- Choix de présence -->
+                        <div class="form-group">
+                            <label>Serez-vous présent(e) ? <span class="required">*</span></label>
+                            <div class="radio-group">
+                                <label class="radio-label">
+                                    <input type="radio" name="will_attend" value="yes" id="attendance_yes" required>
+                                    <span>✓ Oui, je serai présent(e)</span>
+                                </label>
+                                <label class="radio-label">
+                                    <input type="radio" name="will_attend" value="no" id="attendance_no" required>
+                                    <span>✗ Non, je ne pourrai malheureusement pas venir</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Message pour absence -->
+                        <div id="absence-section" style="display:none;">
+                            <div class="info-box">
+                                <p>Nous sommes désolés que vous ne puissiez pas être présent(e). Vous nous manquerez ! 💕</p>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="absence_first_name">Prénom <span class="required">*</span></label>
+                                <input type="text" id="absence_first_name" name="absence_first_name" maxlength="100" placeholder="Votre prénom">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="absence_last_name">Nom <span class="required">*</span></label>
+                                <input type="text" id="absence_last_name" name="absence_last_name" maxlength="100" placeholder="Votre nom">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="absence_message">Un petit mot ? (optionnel)</label>
+                                <textarea id="absence_message" name="absence_message" rows="4" maxlength="1000" placeholder="Un message pour les mariés..."></textarea>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="submit" class="btn-secondary btn-large">
+                                    Confirmer mon absence
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Formulaire détaillé pour présence -->
+                        <div id="presence-section" style="display:none;">
+                            <div class="form-group">
+                                <label for="presence_first_name">Prénom <span class="required">*</span></label>
+                                <input type="text" id="presence_first_name" name="presence_first_name" maxlength="100" placeholder="Votre prénom">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="presence_last_name">Nom <span class="required">*</span></label>
+                                <input type="text" id="presence_last_name" name="presence_last_name" maxlength="100" placeholder="Votre nom">
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="adults_count">Nombre d'adultes <span class="required">*</span></label>
+                                    <select id="adults_count" name="adults_count">
+                                        <option value="0">0</option>
+                                        <option value="1" selected>1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="children_count">Nombre d'enfants</label>
+                                    <select id="children_count" name="children_count">
+                                        <option value="0" selected>0</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="allergies">Allergies ou régimes alimentaires</label>
+                                <textarea id="allergies" name="allergies" rows="3" maxlength="500" placeholder="Végétarien, allergies aux fruits à coque, etc."></textarea>
+                                <span class="form-help">Facultatif - Maximum 500 caractères</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="presence_message">Votre message</label>
+                                <textarea id="presence_message" name="presence_message" rows="4" maxlength="1000" placeholder="Un petit mot pour les mariés..."></textarea>
+                                <span class="form-help">Facultatif - Maximum 1000 caractères</span>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="submit" class="btn-primary btn-large">
+                                    ✓ Confirmer ma présence
+                                </button>
+                            </div>
+                        </div>
+
+                        <p class="form-note">
+                            <small>Les informations collectées sont uniquement utilisées pour l'organisation du mariage et ne seront pas partagées avec des tiers.</small>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <script>
+            // Affichage conditionnel du formulaire selon le choix
+            const attendanceYes = document.getElementById('attendance_yes');
+            const attendanceNo = document.getElementById('attendance_no');
+            const presenceSection = document.getElementById('presence-section');
+            const absenceSection = document.getElementById('absence-section');
+
+            attendanceYes.addEventListener('change', function() {
+                presenceSection.style.display = 'block';
+                absenceSection.style.display = 'none';
+            });
+
+            attendanceNo.addEventListener('change', function() {
+                presenceSection.style.display = 'none';
+                absenceSection.style.display = 'block';
+            });
+        </script>
+    </main>
+
+    {{template "footer" .}}
+</body>
+</html>

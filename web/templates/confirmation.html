@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr">
+{{template "head" .}}
+<body>
+    {{template "header" .}}
+
+    <main>
+        <div class="page-header success">
+            <div class="container">
+                <div class="success-icon">✓</div>
+                <h1>Merci {{.FirstName}} !</h1>
+                <p class="subtitle">Votre réponse a bien été enregistrée</p>
+            </div>
+        </div>
+
+        <section class="content-section">
+            <div class="container text-center">
+                <div class="confirmation-box">
+                    <h2>Récapitulatif</h2>
+                    <p><strong>Nom :</strong> {{.FirstName}} {{.LastName}}</p>
+                    <p><strong>Nombre de personnes :</strong> {{.Total}}</p>
+                    
+                    <p class="mt-4">Nous avons hâte de partager ce moment avec vous !</p>
+                    
+                    <div class="confirmation-actions">
+                        <a href="/" class="btn-secondary">Retour à l'accueil</a>
+                        <a href="/planning" class="btn-primary">Voir le planning</a>
+                    </div>
+                </div>
+
+                <div class="info-box mt-4">
+                    <p><strong>Besoin de modifier votre réponse ?</strong></p>
+                    <p>Contactez-nous directement par téléphone ou email.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    {{template "footer" .}}
+</body>
+</html>

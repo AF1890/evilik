@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="fr">
+{{template "head" .}}
+<body>
+    <nav>
+        <div class="container">
+            <a href="/" class="logo">A & G</a>
+            <ul>
+                <li><a href="/planning">Planning</a></li>
+                <li><a href="/infos">Infos</a></li>
+                <li><a href="/rsvp">RSVP</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="admin-page">
+        <div class="container">
+            <div class="admin-header">
+                <h1>📊 Administration des RSVP</h1>
+                <a href="/admin/export" class="btn-export" download>📥 Exporter en Excel</a>
+            </div>
+            
+            <div class="admin-stats">
+                <div class="stat-card">
+                    <div class="stat-value">{{ .TotalPresents }}</div>
+                    <div class="stat-label">Présents</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">{{ .TotalAbsents }}</div>
+                    <div class="stat-label">Absents</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">{{ .TotalPersonnes }}</div>
+                    <div class="stat-label">Personnes au total</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">{{ .TotalAdultes }}</div>
+                    <div class="stat-label">Adultes</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">{{ .TotalEnfants }}</div>
+                    <div class="stat-label">Enfants</div>
+                </div>
+            </div>
+
+            {{ if .RSVPs }}
+            <div class="rsvp-list">
+                <h2>Liste des confirmations</h2>
+                {{ range .RSVPs }}
+                <div class="rsvp-card">
+                    <div class="rsvp-header">
+                        <h3>
+                            {{ if .WillAttend }}
+                            ✓ {{ .FirstName }} {{ .LastName }}
+                            {{ else }}
+                            ✗ {{ .FirstName }} {{ .LastName }} (Absent)
+                            {{ end }}
+                        </h3>
+                        <div class="rsvp-actions">
+                            <span class="rsvp-date">{{ .SubmittedAt.Format "02/01/2006 15:04" }}</span>
+                            <a href="/admin/delete?id={{ .ID }}" class="btn-delete" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette inscription ?')">🗑️ Supprimer</a>
+                        </div>
+                    </div>
+                    <div class="rsvp-details">
+                        {{ if .WillAttend }}
+                        <p><strong>👥 Adultes :</strong> {{ .AdultsCount }}</p>
+                        <p><strong>👶 Enfants :</strong> {{ .ChildrenCount }}</p>
+                        <p><strong>📊 Total :</strong> {{ .TotalGuests }} personne(s)</p>
+                        {{ if .Allergies }}
+                        <p><strong>🍽️ Allergies/Régimes :</strong> {{ .Allergies }}</p>
+                        {{ end }}
+                        {{ end }}
+                        {{ if .Message }}
+                        <div class="rsvp-message">
+                            <strong>💬 Message :</strong>
+                            <p>{{ .Message }}</p>
+                        </div>
+                        {{ end }}
+                    </div>
+                </div>
+                {{ end }}
+            </div>
+            {{ else }}
+            <div class="no-rsvp">
+                <p>Aucune confirmation pour le moment.</p>
+            </div>
+            {{ end }}
+        </div>
+    </main>
+
+    {{template "footer" .}}
+</body>
+</html>
+
