@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{.Lang}}">
 {{template "head" .}}
 <body>
     {{template "header" .}}
@@ -7,8 +7,8 @@
     <main>
         <div class="page-header">
             <div class="container">
-                <h1>{{.Title}}</h1>
-                <p class="subtitle">Programme de la journée du 11 juillet 2026</p>
+                <h1>{{T .T "planning.title"}}</h1>
+                <p class="subtitle">{{T .T "planning.subtitle"}}</p>
             </div>
         </div>
 
@@ -16,7 +16,7 @@
             <div class="container">
                 <div class="download-btn-container">
                     <a href="/calendar.ics" class="btn-secondary" download>
-                        📥 Télécharger le calendrier (.ics)
+                        📥 {{T .T "planning.download"}}
                     </a>
                 </div>
 
@@ -46,7 +46,7 @@
                 </div>
 
                 <div class="info-box mt-4">
-                    <p><strong>Note importante :</strong> Les horaires sont donnés à titre indicatif et peuvent varier légèrement.</p>
+                    <p><strong>{{T .T "planning.info_box"}}</strong></p>
                 </div>
             </div>
         </section>

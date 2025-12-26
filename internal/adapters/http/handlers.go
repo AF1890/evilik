@@ -9,6 +9,7 @@ import (
 	"strconv"
 	"strings"
 	"wedding-web/internal/application"
+	"wedding-web/internal/i18n"
 )
 
 // Handlers contient tous les handlers HTTP
@@ -38,8 +39,16 @@ func NewHandlers(
 	adminUsername string,
 	adminPassword string,
 ) (*Handlers, error) {
+	// Créer les fonctions template personnalisées
+	funcMap := template.FuncMap{
+		"T": func(t *i18n.Translations, key string) string {
+			return t.T(key)
+		},
+	}
+
 	// Charger les templates avec les partials
-	tmpl, err := template.ParseGlob(filepath.Join(templatesDir, "partials", "*.html"))
+	tmpl := template.New("").Funcs(funcMap)
+	tmpl, err := tmpl.ParseGlob(filepath.Join(templatesDir, "partials", "*.html"))
 	if err != nil {
 		return nil, err
 	}
@@ -82,8 +91,16 @@ func (h *Handlers) reloadTemplates() {
 		return
 	}
 
+	// Créer les fonctions template personnalisées
+	funcMap := template.FuncMap{
+		"T": func(t *i18n.Translations, key string) string {
+			return t.T(key)
+		},
+	}
+
 	// Charger les partials d'abord
-	tmpl, err := template.ParseGlob(filepath.Join(h.templatesDir, "partials", "*.html"))
+	tmpl := template.New("").Funcs(funcMap)
+	tmpl, err := tmpl.ParseGlob(filepath.Join(h.templatesDir, "partials", "*.html"))
 	if err != nil {
 		return
 	}
@@ -103,12 +120,26 @@ func (h *Handlers) reloadTemplates() {
 	}
 }
 
+// getTranslations récupère les traductions depuis la requête et définit le cookie
+func (h *Handlers) getTranslations(r *Request, w ResponseWriter) *i18n.Translations {
+	lang := i18n.GetLangFromRequest(r.Request)
+
+	// Toujours définir le cookie pour persister la languevps chez 
+	i18n.SetLangCookie(w, lang)
+
+	return i18n.NewTranslations(lang)
+}
+
 // HomeHandler affiche la page d'accueil
 func (h *Handlers) HomeHandler(w ResponseWriter, r *Request) error {
 	h.reloadTemplates()
 
+	t := h.getTranslations(r, w)
+
 	data := map[string]interface{}{
 		"Title": "A & G",
+		"T":     t,
+		"Lang":  t.Lang(),
 	}
 
 	return h.templates.ExecuteTemplate(w, "home.html", data)
@@ -118,11 +149,14 @@ func (h *Handlers) HomeHandler(w ResponseWriter, r *Request) error {
 func (h *Handlers) PlanningHandler(w ResponseWriter, r *Request) error {
 	h.reloadTemplates()
 
+	t := h.getTranslations(r, w)
 	planning := h.planningService.GetPlanning()
 
 	data := map[string]interface{}{
-		"Title":    "Planning de la journée",
+		"Title":    t.T("nav.planning"),
 		"Planning": planning,
+		"T":        t,
+		"Lang":     t.Lang(),
 	}
 
 	return h.templates.ExecuteTemplate(w, "planning.html", data)
@@ -132,11 +166,14 @@ func (h *Handlers) PlanningHandler(w ResponseWriter, r *Request) error {
 func (h *Handlers) InfosHandler(w ResponseWriter, r *Request) error {
 	h.reloadTemplates()
 
+	t := h.getTranslations(r, w)
 	info := h.infoService.GetPracticalInfo()
 
 	data := map[string]interface{}{
-		"Title": "Informations pratiques",
+		"Title": t.T("nav.info"),
 		"Info":  info,
+		"T":     t,
+		"Lang":  t.Lang(),
 	}
 
 	return h.templates.ExecuteTemplate(w, "infos.html", data)
@@ -145,6 +182,8 @@ func (h *Handlers) InfosHandler(w ResponseWriter, r *Request) error {
 // RSVPGetHandler affiche le formulaire RSVP
 func (h *Handlers) RSVPGetHandler(w ResponseWriter, r *Request) error {
 	h.reloadTemplates()
+
+	t := h.getTranslations(r, w)
 
 	// Récupérer ou créer une session
 	sessionID := getOrCreateSession(w, r.Request)
@@ -156,8 +195,10 @@ func (h *Handlers) RSVPGetHandler(w ResponseWriter, r *Request) error {
 	}
 
 	data := map[string]interface{}{
-		"Title":     "Confirmez votre présence",
+		"Title":     t.T("nav.rsvp"),
 		"CSRFToken": csrfToken,
+		"T":         t,
+		"Lang":      t.Lang(),
 	}
 
 	return h.templates.ExecuteTemplate(w, "rsvp.html", data)
@@ -234,20 +275,40 @@ func (h *Handlers) RSVPPostHandler(w ResponseWriter, r *Request) error {
 	// Soumettre le RSVP
 	rsvp, err := h.rsvpService.SubmitRSVP(firstName, lastName, willAttend, adultsCount, childrenCount, allergies, message, ip)
 	if err != nil {
+		t := h.getTranslations(r, w)
+
+		// Traduire le message d'erreur
+		errorMsg := err.Error()
+		switch errorMsg {
+		case "nom invalide":
+			errorMsg = t.T("error.invalid_name")
+		case "nombre d'invités invalide":
+			errorMsg = t.T("error.invalid_guests")
+		case "message trop long":
+			errorMsg = t.T("error.message_too_long")
+		case "allergies trop longues":
+			errorMsg = t.T("error.allergies_too_long")
+		}
+
 		data := map[string]interface{}{
-			"Title": "Erreur",
-			"Error": err.Error(),
+			"Title": t.T("error.title"),
+			"Error": errorMsg,
+			"T":     t,
+			"Lang":  t.Lang(),
 		}
 		w.WriteHeader(http.StatusBadRequest)
 		return h.templates.ExecuteTemplate(w, "error.html", data)
 	}
 
 	// Redirection vers la page de confirmation
+	t := h.getTranslations(r, w)
 	data := map[string]interface{}{
-		"Title":     "Confirmation",
+		"Title":     t.T("rsvp.confirmation"),
 		"FirstName": rsvp.FirstName,
 		"LastName":  rsvp.LastName,
 		"Total":     rsvp.TotalGuests(),
+		"T":         t,
+		"Lang":      t.Lang(),
 	}
 
 	return h.templates.ExecuteTemplate(w, "confirmation.html", data)
@@ -283,11 +344,14 @@ func (h *Handlers) HealthHandler(w ResponseWriter, r *Request) error {
 
 // NotFoundHandler gère les 404
 func (h *Handlers) NotFoundHandler(w ResponseWriter, r *Request) error {
+	t := h.getTranslations(r, w)
 	w.WriteHeader(http.StatusNotFound)
 
 	data := map[string]interface{}{
-		"Title":   "Page non trouvée",
-		"Message": "La page que vous cherchez n'existe pas.",
+		"Title":   t.T("error.title"),
+		"Message": "Page non trouvée",
+		"T":       t,
+		"Lang":    t.Lang(),
 	}
 
 	return h.templates.ExecuteTemplate(w, "error.html", data)

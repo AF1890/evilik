@@ -26,7 +26,6 @@ func GetDefaultPracticalInfo() *PracticalInfo {
 La cérémonie laïque se tiendra ensuite chez nous, au 8 rue du Bois Beaudoin, à Cély-en-Bière.
 La soirée se poursuivra à la Bergerie de Villiers-en-Bière.
 Adresse : rue de la Bascule, 77190 Villiers-en-Bière.`,
-			Icon: "📍",
 		},
 	}
 }

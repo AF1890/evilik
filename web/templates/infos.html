@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{.Lang}}">
 {{template "head" .}}
 <body>
     {{template "header" .}}
@@ -7,22 +7,20 @@
     <main>
         <div class="page-header">
             <div class="container">
-                <h1>{{.Title}}</h1>
-                <p class="subtitle">Toutes les informations pour rejoindre la fête</p>
+                <h1>{{T .T "info.title"}}</h1>
             </div>
         </div>
 
         <section class="content-section">
             <div class="container">
                 <div class="info-simple">
-                    <div class="info-icon-large">{{.Info.Venue.Icon}}</div>
-                    <h2 class="info-title-large">{{.Info.Venue.Title}}</h2>
-                    <div class="info-content-large">{{.Info.Venue.Content}}</div>
+                    <h2 class="info-title-large">{{T .T "info.venue_title"}}</h2>
+                    <div class="info-content-large" style="white-space: pre-line;">{{T .T "info.venue_content"}}</div>
                     
                     {{if .Info.MapURL}}
                     <div class="map-container-centered">
                         <a href="{{.Info.MapURL}}" target="_blank" rel="noopener noreferrer" class="btn-primary btn-large-map">
-                            🗺️ Voir sur Google Maps
+                            🗺️ {{T .T "info.venue_map"}}
                         </a>
                     </div>
                     {{end}}

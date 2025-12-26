@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{.Lang}}">
 {{template "head" .}}
 <body>
     {{template "header" .}}
@@ -24,8 +24,8 @@
                 {{end}}
 
                 <div class="error-actions">
-                    <a href="/" class="btn-primary">Retour à l'accueil</a>
-                    <a href="javascript:history.back()" class="btn-secondary">Page précédente</a>
+                    <a href="/" class="btn-primary">{{T .T "error.back"}}</a>
+                    <a href="javascript:history.back()" class="btn-secondary">{{T .T "nav.home"}}</a>
                 </div>
             </div>
         </section>

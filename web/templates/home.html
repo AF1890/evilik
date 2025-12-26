@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{.Lang}}">
 {{template "head" .}}
 <body>
     {{template "header" .}}
@@ -14,19 +14,11 @@
             </div>
             <div class="hero-overlay"></div>
             <div class="hero-content-fullscreen">
-                <h1 class="hero-title-fullscreen">Aylin et Guillaume</h1>
-                <p class="hero-date-fullscreen">11 juillet 2026 à Cély-en-Bière</p>
-                <p class="hero-text-fullscreen">
-                    16 ans, deux enfants... et maintenant,<br>
-                    on embarque pour une nouvelle aventure: on se marie!<br>
-                    Hâte de vous avoir avec nous !
-                </p>
-                <!-- <p class="hero-text-fullscreen">
-                    Après 16 ans ensemble et deux enfants,<br>
-                    on se marie et on a hâte de le célébrer avec vous !
-                </p> -->
+                <h1 class="hero-title-fullscreen">{{T .T "home.title"}}</h1>
+                <p class="hero-date-fullscreen">{{T .T "home.date"}}</p>
+                <p class="hero-text-fullscreen" style="white-space: pre-line;">{{T .T "home.intro"}}</p>
                 <div class="hero-cta">
-                    <a href="/rsvp" class="btn-primary btn-hero">Confirmer ma présence</a>
+                    <a href="/rsvp" class="btn-primary btn-hero">{{T .T "home.cta_button"}}</a>
                 </div>
             </div>
         </div>
@@ -35,19 +27,19 @@
             <div class="container">
                 <div class="cta-grid">
                     <a href="/planning" class="cta-card">
-                        <span class="cta-icon">📅</span>
-                        <h3>Planning</h3>
-                        <p>Découvrez le déroulement de la journée</p>
+                        <span class="cta-icon"><i class="fa-solid fa-calendar-days"></i></span>
+                        <h3>{{T .T "home.card1_title"}}</h3>
+                        <p>{{T .T "home.card1_desc"}}</p>
                     </a>
                     <a href="/infos" class="cta-card">
-                        <span class="cta-icon">ℹ️</span>
-                        <h3>Infos pratiques</h3>
-                        <p>Lieu, accès, hébergement...</p>
+                        <span class="cta-icon"><i class="fa-solid fa-circle-info"></i></span>
+                        <h3>{{T .T "home.card2_title"}}</h3>
+                        <p>{{T .T "home.card2_desc"}}</p>
                     </a>
                     <a href="/rsvp" class="cta-card cta-primary">
-                        <span class="cta-icon">✉️</span>
-                        <h3>Confirmer votre présence</h3>
-                        <p>Merci de nous répondre avant le 1er mars 2026</p>
+                        <span class="cta-icon"><i class="fa-solid fa-envelope"></i></span>
+                        <h3>{{T .T "home.card3_title"}}</h3>
+                        <p>{{T .T "home.card3_desc"}}</p>
                     </a>
                 </div>
             </div>

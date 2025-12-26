@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{.Lang}}">
 {{template "head" .}}
 <body>
     {{template "header" .}}
@@ -7,8 +7,8 @@
     <main>
         <div class="page-header">
             <div class="container">
-                <h1>{{.Title}}</h1>
-                <p class="subtitle">Merci de confirmer votre présence avant le 1er juin 2026</p>
+                <h1>{{T .T "rsvp.title"}}</h1>
+                <p class="subtitle">{{T .T "rsvp.subtitle"}}</p>
             </div>
         </div>
 
@@ -23,43 +23,40 @@
 
                         <!-- Choix de présence -->
                         <div class="form-group">
-                            <label>Serez-vous présent(e) ? <span class="required">*</span></label>
+                            <label>{{T .T "rsvp.attendance"}} <span class="required">*</span></label>
                             <div class="radio-group">
                                 <label class="radio-label">
                                     <input type="radio" name="will_attend" value="yes" id="attendance_yes" required>
-                                    <span>✓ Oui, je serai présent(e)</span>
+                                    <span>{{T .T "rsvp.attendance_yes"}}</span>
                                 </label>
                                 <label class="radio-label">
                                     <input type="radio" name="will_attend" value="no" id="attendance_no" required>
-                                    <span>✗ Non, je ne pourrai malheureusement pas venir</span>
+                                    <span>{{T .T "rsvp.attendance_no"}}</span>
                                 </label>
                             </div>
                         </div>
 
                         <!-- Message pour absence -->
                         <div id="absence-section" style="display:none;">
-                            <div class="info-box">
-                                <p>Nous sommes désolés que vous ne puissiez pas être présent(e). Vous nous manquerez ! 💕</p>
-                            </div>
                             
                             <div class="form-group">
-                                <label for="absence_first_name">Prénom <span class="required">*</span></label>
-                                <input type="text" id="absence_first_name" name="absence_first_name" maxlength="100" placeholder="Votre prénom">
+                                <label for="absence_first_name">{{T .T "rsvp.firstname"}} <span class="required">*</span></label>
+                                <input type="text" id="absence_first_name" name="absence_first_name" maxlength="100" placeholder="{{T .T "rsvp.firstname"}}" required>
                             </div>
 
                             <div class="form-group">
-                                <label for="absence_last_name">Nom <span class="required">*</span></label>
-                                <input type="text" id="absence_last_name" name="absence_last_name" maxlength="100" placeholder="Votre nom">
+                                <label for="absence_last_name">{{T .T "rsvp.lastname"}} <span class="required">*</span></label>
+                                <input type="text" id="absence_last_name" name="absence_last_name" maxlength="100" placeholder="{{T .T "rsvp.lastname"}}" required>
                             </div>
                             
                             <div class="form-group">
-                                <label for="absence_message">Un petit mot ? (optionnel)</label>
-                                <textarea id="absence_message" name="absence_message" rows="4" maxlength="1000" placeholder="Un message pour les mariés..."></textarea>
+                                <label for="absence_message">{{T .T "rsvp.message_absence"}}</label>
+                                <textarea id="absence_message" name="absence_message" rows="4" maxlength="1000" placeholder="{{T .T "rsvp.message_absence_ph"}}"></textarea>
                             </div>
 
                             <div class="form-actions">
                                 <button type="submit" class="btn-secondary btn-large">
-                                    Confirmer mon absence
+                                    {{T .T "rsvp.submit"}}
                                 </button>
                             </div>
                         </div>
@@ -67,18 +64,18 @@
                         <!-- Formulaire détaillé pour présence -->
                         <div id="presence-section" style="display:none;">
                             <div class="form-group">
-                                <label for="presence_first_name">Prénom <span class="required">*</span></label>
-                                <input type="text" id="presence_first_name" name="presence_first_name" maxlength="100" placeholder="Votre prénom">
+                                <label for="presence_first_name">{{T .T "rsvp.firstname"}} <span class="required">*</span></label>
+                                <input type="text" id="presence_first_name" name="presence_first_name" maxlength="100" placeholder="{{T .T "rsvp.firstname"}}" required>
                             </div>
 
                             <div class="form-group">
-                                <label for="presence_last_name">Nom <span class="required">*</span></label>
-                                <input type="text" id="presence_last_name" name="presence_last_name" maxlength="100" placeholder="Votre nom">
+                                <label for="presence_last_name">{{T .T "rsvp.lastname"}} <span class="required">*</span></label>
+                                <input type="text" id="presence_last_name" name="presence_last_name" maxlength="100" placeholder="{{T .T "rsvp.lastname"}}" required>
                             </div>
 
                             <div class="form-row">
                                 <div class="form-group">
-                                    <label for="adults_count">Nombre d'adultes <span class="required">*</span></label>
+                                    <label for="adults_count">{{T .T "rsvp.adults"}} <span class="required">*</span></label>
                                     <select id="adults_count" name="adults_count">
                                         <option value="0">0</option>
                                         <option value="1" selected>1</option>
@@ -90,7 +87,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="children_count">Nombre d'enfants</label>
+                                    <label for="children_count">{{T .T "rsvp.children"}}</label>
                                     <select id="children_count" name="children_count">
                                         <option value="0" selected>0</option>
                                         <option value="1">1</option>
@@ -103,26 +100,26 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="allergies">Allergies ou régimes alimentaires</label>
-                                <textarea id="allergies" name="allergies" rows="3" maxlength="500" placeholder="Végétarien, allergies aux fruits à coque, etc."></textarea>
+                                <label for="allergies">{{T .T "rsvp.allergies"}}</label>
+                                <textarea id="allergies" name="allergies" rows="3" maxlength="500" placeholder="{{T .T "rsvp.allergies_placeholder"}}"></textarea>
                                 <span class="form-help">Facultatif - Maximum 500 caractères</span>
                             </div>
 
                             <div class="form-group">
-                                <label for="presence_message">Votre message</label>
-                                <textarea id="presence_message" name="presence_message" rows="4" maxlength="1000" placeholder="Un petit mot pour les mariés..."></textarea>
+                                <label for="presence_message">{{T .T "rsvp.message"}}</label>
+                                <textarea id="presence_message" name="presence_message" rows="4" maxlength="1000" placeholder="{{T .T "rsvp.message_placeholder"}}"></textarea>
                                 <span class="form-help">Facultatif - Maximum 1000 caractères</span>
                             </div>
 
                             <div class="form-actions">
                                 <button type="submit" class="btn-primary btn-large">
-                                    ✓ Confirmer ma présence
+                                    {{T .T "rsvp.submit"}}
                                 </button>
                             </div>
                         </div>
 
                         <p class="form-note">
-                            <small>Les informations collectées sont uniquement utilisées pour l'organisation du mariage et ne seront pas partagées avec des tiers.</small>
+                            <small>{{T .T "rsvp.privacy_note"}}</small>
                         </p>
                     </form>
                 </div>
@@ -136,14 +133,39 @@
             const presenceSection = document.getElementById('presence-section');
             const absenceSection = document.getElementById('absence-section');
 
+            // Fonction pour activer/désactiver les champs required
+            function toggleRequired(sectionToEnable, sectionToDisable) {
+                // Activer les champs required de la section affichée
+                sectionToEnable.querySelectorAll('input[type="text"]').forEach(input => {
+                    input.setAttribute('required', 'required');
+                });
+                
+                // Désactiver les champs required de la section cachée
+                sectionToDisable.querySelectorAll('input[type="text"]').forEach(input => {
+                    input.removeAttribute('required');
+                });
+            }
+
             attendanceYes.addEventListener('change', function() {
                 presenceSection.style.display = 'block';
                 absenceSection.style.display = 'none';
+                toggleRequired(presenceSection, absenceSection);
             });
 
             attendanceNo.addEventListener('change', function() {
                 presenceSection.style.display = 'none';
                 absenceSection.style.display = 'block';
+                toggleRequired(absenceSection, presenceSection);
+            });
+
+            // Au chargement, désactiver tous les required (aucune section n'est affichée)
+            document.addEventListener('DOMContentLoaded', function() {
+                presenceSection.querySelectorAll('input[type="text"]').forEach(input => {
+                    input.removeAttribute('required');
+                });
+                absenceSection.querySelectorAll('input[type="text"]').forEach(input => {
+                    input.removeAttribute('required');
+                });
             });
         </script>
     </main>

@@ -3,10 +3,17 @@
     <div class="container">
         <a href="/" class="logo">A & G</a>
         <ul class="nav-links">
-            <li><a href="/">Accueil</a></li>
-            <li><a href="/planning">Planning</a></li>
-            <li><a href="/infos">Infos pratiques</a></li>
-            <li><a href="/rsvp" class="btn-primary">RSVP</a></li>
+            <li><a href="/">{{T .T "nav.home"}}</a></li>
+            <li><a href="/planning">{{T .T "nav.planning"}}</a></li>
+            <li><a href="/infos">{{T .T "nav.info"}}</a></li>
+            <li><a href="/rsvp" class="btn-primary">{{T .T "nav.rsvp"}}</a></li>
+            <li class="lang-switcher">
+                {{if eq .Lang "fr"}}
+                    <a href="?lang=de" class="lang-link" title="Deutsch">🇩🇪 DE</a>
+                {{else}}
+                    <a href="?lang=fr" class="lang-link" title="Français">🇫🇷 FR</a>
+                {{end}}
+            </li>
         </ul>
     </div>
 </nav>
